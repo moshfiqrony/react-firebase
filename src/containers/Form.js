@@ -6,6 +6,7 @@ function Form(props) {
         <form
             onSubmit={props.handleClick}
         >
+                <h1>Form</h1>
             <div className="row justify-content-center d-flex align-items-center">
                 <div className="col-4">
                     <div className="row pt-5 justify-content-center d-flex">
@@ -20,7 +21,7 @@ function Form(props) {
                         </div>
                         <div className="col-12 pb-4">
                             <Input
-                                name='username'
+                                name='email'
                                 required
                                 type='email'
                                 value={props.email}

@@ -1,11 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { Spin, Icon } from 'antd';
+import React, { useEffect, useState } from 'react';
+import InsertForm from './containers/Form';
+import Table from './containers/Table';
 import fire from './Firebase';
-import { Input, Button, Icon } from 'antd'
 
 function App(props) {
 	const [username, setUsername] = useState()
 	const [email, setEmail] = useState()
-	const [users, setUsers] = useState([]);
+	const [users, setUsers] = useState(null);
 	const db = fire.firestore();
 
 	const loadData = async () => {
@@ -21,73 +23,39 @@ function App(props) {
 
 	useEffect(() => {
 		loadData()
-	}, []);
+	});
 
-	const handleClick = () => {
-		let data = db.collection('users').add({
+	const handleClick = (e) => {
+		e.preventDefault();
+		db.collection('users').add({
 			username: username,
 			email: email
+		})
+		.then(result => {
+			setUsername('');
+			setEmail('');
 		})
 		loadData()
 	}
 	const handleDelete = (id) => {
-		let data = db.collection('users').doc(id).delete()
+		db.collection('users').doc(id).delete()
 		loadData()
 	}
 
 
 	return (
 		<div className='container'>
-			<div className="row justify-content-center d-flex align-items-center">
-				<div className="col-4">
-					<div className="row pt-5 justify-content-center d-flex">
-						<div className="col-12 pb-4">
-							<Input
-								name='username'
-								value={username}
-								placeholder='Enter your username'
-								onChange={(event) => setUsername(event.target.value)}
-							/>
-						</div>
-						<div className="col-12 pb-4">
-							<Input
-								name='username'
-								value={email}
-								placeholder='Enter your email'
-								onChange={(event) => setEmail(event.target.value)}
-							/>
-						</div>
-						<div className="col-12 pb-4">
-							<Button
-								style={{width: '100%'}}
-								type='primary'
-								onClick={handleClick}
-							>Add</Button>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div className="row">
-				<table className='table table-bordered'>
-					<thead>
-						<tr>
-							<th>Username</th>
-							<th>Email</th>
-							<th>Action</th>
-						</tr>
-					</thead>
-					<tbody>
-						{users.map(user => {
-							return (<tr key={user.id}>
-								<td>{user.data().username}</td>
-								<td>{user.data().email}</td>
-								<td><Button type='danger' onClick={() => handleDelete(user.id)}>Remove</Button></td>
-							</tr>)
-						})}
-					</tbody>
-				</table>
-
-			</div>
+			<InsertForm
+				handleClick={handleClick}
+				setEmail={setEmail}
+				setUsername={setUsername}
+				email={email}
+				username={username}
+			/>
+			{users ? <Table
+				users={users}
+				handleDelete={handleDelete}
+			/> : <Spin indicator={<Icon type='loading'/>} size='large'/>}
 		</div>
 	);
 }
