@@ -6,7 +6,7 @@ import Form from '../containers/Form';
 import Table from '../containers/Table';
 
 
-test.only('test submit button calll', ()=> {
+test('test submit button calll', ()=> {
     const myMock = jest.fn(x => x+1);
     myMock(10);
     console.log(myMock.mock)
@@ -17,12 +17,6 @@ test.only('test submit button calll', ()=> {
     expect(getByText('Email')).toBeInTheDocument()
     expect(getByText('Action')).toBeInTheDocument()
 })
-
-
-
-
-
-
 
 test('submit button press and submit function called one time', () => {
     const container = document.createElement('div');
