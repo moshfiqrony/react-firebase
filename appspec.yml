@@ -1,0 +1,23 @@
+version: 0.0
+os: linux 
+files:
+  - source: ./
+    destination: /home/ubuntu/react-firebase
+    overwrite: yes
+hooks:
+  BeforeInstall:
+    - location: pipelineScripts/BeforeInstall.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: pipelineScripts/AfterInstall.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: pipelineScripts/ApplicationStart.sh
+      timeout: 300
+      runas: root
+  ValidateService:
+    - location: pipelineScripts/ValidateService.sh
+      timeout: 300
+      runas: root
