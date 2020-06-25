@@ -1,1 +1,1 @@
-echo BeforeInstall
+yarn start

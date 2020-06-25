@@ -1,1 +1,2 @@
-echo BeforeInstall
+yarn install
+yarn build
